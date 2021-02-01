@@ -197,7 +197,7 @@ function getEmployeeCardHTML(employee) {
             icon = `<i class="fas fa-user-graduate"></i>`;
             break;
         case "Engineer":
-            typespecificli = `<li class="list-group-item">Github: <a href="https://www.github.com/${employee.getGithub()}">${employee.getGithub()}</a></li>`;
+            typespecificli = `<li class="list-group-item">GitHub: <a href="https://www.github.com/${employee.getGithub()}">${employee.getGithub()}</a></li>`;
             icon = `<i class="fas fa-glasses"></i>`;
             break;
     }
