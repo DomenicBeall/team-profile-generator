@@ -86,5 +86,85 @@ function createIntern() {
 }
 
 function writeHTML() {
+
+    let cardHTML = "";
+
+    for (let i = 0; i < employees.length; i++) {
+        cardHTML += getEmployeeCardHTML(employees[i]);
+    }
+
+    let html = `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <!-- Bootstrap -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+        <link href="./style.css" rel="stylesheet">
     
+        <title>My Team</title>
+    </head>
+    <body>
+        <header class="bg-danger">
+            <h1>My Team</h1>
+        </header>
+
+        <div class="container">
+            ${cardHTML}
+        </div>
+    </body>
+    <style>
+        header {
+            text-align: center;
+            padding: 50px;
+            margin-bottom: 20px;
+            background-color: orange;
+            color: white;
+        }
+    </style>
+    </html>
+    `;
+
+    // Write html to a file
+    fs.writeFile("index.html", html, (err) => {
+        if (err) throw err;
+        console.log("Your html has been saved successfully!");
+    })
+}
+
+function getEmployeeCardHTML(employee) {
+    
+    let li = "";
+
+    switch (employee.getRole()) {
+        case "Manager":
+            li = `<li class="list-group-item">Office Number: ${employee.getOffice()}</li>`;
+            break;
+        case "Intern":
+            li = `<li class="list-group-item">School: ${employee.getSchool()}</li>`;
+            break;
+        case "Engineer":
+            li = `<li class="list-group-item">Github: <a href="https://www.github.com/${employee.getGithub()}">${employee.getGithub()}</a></li>`;
+            break;
+    }
+
+    return `
+<div class="card shadow mx-auto" style="width: 18rem;">
+    <div class="card-header bg-primary text-white">
+        <h2>${employee.getName()}</h2>
+        <h4>${employee.getRole()}</h4>
+    </div>
+
+    <div class="card-body bg-light">
+        <ul class="list-group">
+            <li class="list-group-item">ID: ${employee.getId()}</li>
+            <li class="list-group-item">Email: <a href="${employee.getEmail()}">${employee.getEmail()}</a></li>
+            ${li}
+            </ul>
+    </div>
+</div>
+    `;
+
 }
