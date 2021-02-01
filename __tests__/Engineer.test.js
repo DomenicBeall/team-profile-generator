@@ -11,6 +11,7 @@ describe("Engineer", () => {
             expect(emp.getId()).toEqual(1);
             expect(emp.getEmail()).toEqual("domenicbeall2@gmail.com");
             expect(emp.getGithub()).toEqual("DomenicBeall");
+            expect(emp.getRole()).toEqual("Engineer");
         });
 
     });

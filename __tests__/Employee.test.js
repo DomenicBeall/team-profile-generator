@@ -10,6 +10,7 @@ describe("Employee", () => {
             expect(emp.getName()).toEqual("Steve");
             expect(emp.getId()).toEqual(1);
             expect(emp.getEmail()).toEqual("domenicbeall2@gmail.com");
+            expect(emp.getRole()).toEqual("Employee");
         });
 
     });
