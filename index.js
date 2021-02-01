@@ -212,7 +212,7 @@ function getEmployeeCardHTML(employee) {
     <div class="card-body bg-light">
         <ul class="list-group">
             <li class="list-group-item">ID: ${employee.getId()}</li>
-            <li class="list-group-item">Email: <a href="${employee.getEmail()}">${employee.getEmail()}</a></li>
+            <li class="list-group-item">Email: <a href="mailto:${employee.getEmail()}">${employee.getEmail()}</a></li>
             ${typespecificli}
             </ul>
     </div>
