@@ -105,6 +105,9 @@ function writeHTML() {
         <link href="./style.css" rel="stylesheet">
     
         <title>My Team</title>
+
+        <!-- Font Awesome Kit -->
+        <script src="https://kit.fontawesome.com/5c8c766aa1.js" crossorigin="anonymous"></script>
     </head>
     <body>
         <header class="bg-danger">
@@ -112,7 +115,9 @@ function writeHTML() {
         </header>
 
         <div class="container">
-            ${cardHTML}
+            <div class="row">
+                ${cardHTML}
+            </div>
         </div>
     </body>
     <style>
@@ -122,6 +127,11 @@ function writeHTML() {
             margin-bottom: 20px;
             background-color: orange;
             color: white;
+        }
+
+        .card {
+            margin-top: 20px;
+            padding: 0px;
         }
     </style>
     </html>
@@ -137,16 +147,20 @@ function writeHTML() {
 function getEmployeeCardHTML(employee) {
     
     let li = "";
+    let icon = "";
 
     switch (employee.getRole()) {
         case "Manager":
             li = `<li class="list-group-item">Office Number: ${employee.getOffice()}</li>`;
+            icon = `<i class="fas fa-mug-hot"></i>`;
             break;
         case "Intern":
             li = `<li class="list-group-item">School: ${employee.getSchool()}</li>`;
+            icon = `<i class="fas fa-user-graduate"></i>`;
             break;
         case "Engineer":
             li = `<li class="list-group-item">Github: <a href="https://www.github.com/${employee.getGithub()}">${employee.getGithub()}</a></li>`;
+            icon = `<i class="fas fa-glasses"></i>`;
             break;
     }
 
@@ -154,7 +168,7 @@ function getEmployeeCardHTML(employee) {
 <div class="card shadow mx-auto" style="width: 18rem;">
     <div class="card-header bg-primary text-white">
         <h2>${employee.getName()}</h2>
-        <h4>${employee.getRole()}</h4>
+        <h4>${icon} ${employee.getRole()}</h4>
     </div>
 
     <div class="card-body bg-light">
