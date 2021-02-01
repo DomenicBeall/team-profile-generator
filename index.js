@@ -2,21 +2,25 @@
 const fs = require("fs");
 const inquirer = require("inquirer");
 
+// Create class references
 const Manager = require("./lib/Manager");
 const Intern = require("./lib/Intern");
 const Engineer = require("./lib/Engineer");
 
 
-// Create array of employees to be written
-employees = [];
+employees = []; // Store array of employees to be added to html
 currentEmployeeID = 1;
 
+// Prompt user for managers information
 inquirer.prompt([
+
     { type: "input", name: "name", message: "What is the managers name?" },
     { type: "input", name: "email", message: "What is the managers email?" },
     { type: "number", name: "office", message: "What is the managers office number?" }
+
 ]).then(answers => {
 
+    // Add new manager to list of employees
     employees.push(new Manager(
         answers.name,
         grabID(),
@@ -24,19 +28,25 @@ inquirer.prompt([
         answers.office
     ));
 
+    // Prompt user to add another employee or finish adding employees
     addEmployees();
 });
 
-
+// Returns the current id and iterates it by 1
 function grabID() {
     currentEmployeeID += 1;
     return currentEmployeeID - 1;
 }
 
+// Prompts the user to add a new employee
 function addEmployees() {
+
+    // Prompt user to add another employee or finish adding employees
     inquirer.prompt([
         { type: "list", name: "type", message: "What type of employee would you like to add?", choices: ["Engineer", "Intern", "Done"] }
     ]).then(answers => {
+
+        // Either prompt the user to add the selected employee type or break them from the loop
         switch (answers.type) {
             case "Engineer":
                 createEngineer();
@@ -48,15 +58,23 @@ function addEmployees() {
                 writeHTML();
                 break;
         }
+
     });
 }
 
+// Adds an engineer to the list of employees
 function createEngineer() {
+
+    // Prompt the user for the new engineers details
     inquirer.prompt([
+
         { type: "input", name: "name", message: "What is the engineer's name?" },
         { type: "input", name: "email", message: "What is the engineer's email?" },
         { type: "input", name: "github", message: "What is the engineer's GitHub username?" }
+    
     ]).then(answers => {
+        
+        // Add a new engineer to the employees array
         employees.push(new Engineer(
             answers.name,
             grabID(),
@@ -64,16 +82,24 @@ function createEngineer() {
             answers.github
         ));
 
+        // Prompt user to add another employee
         addEmployees();
     });
 }
 
+// Adds an intern to the list of employees
 function createIntern() {
+
+    // Prompt user for the new interns details
     inquirer.prompt([
+
         { type: "input", name: "name", message: "What is the intern's name?" },
         { type: "input", name: "email", message: "What is the intern's email?" },
         { type: "input", name: "school", message: "What school is the intern from?" }
+
     ]).then(answers => {
+
+        // Add a new intern to the employees array
         employees.push(new Intern(
             answers.name,
             grabID(),
@@ -81,18 +107,32 @@ function createIntern() {
             answers.school
         ));
 
+        // Prompt user to add another employee
         addEmployees();
     });
 }
 
+// Writes generated html to a file
 function writeHTML() {
+    fs.writeFile("index.html", generateHTML(), (err) => {
+        if (err) throw err; // Throw an error if the write failed
 
+        console.log("Your html has been saved successfully!"); // Otherwise notify the user that the file has been saved
+    })
+}
+
+// Adds cards to some template html
+function generateHTML() {
+
+    // Variable to keep track of the html of the cards
     let cardHTML = "";
 
+    // Iterate through each employee and generate their card html
     for (let i = 0; i < employees.length; i++) {
         cardHTML += getEmployeeCardHTML(employees[i]);
     }
 
+    // Store the html to be written
     let html = `
     <!DOCTYPE html>
     <html lang="en">
@@ -137,29 +177,27 @@ function writeHTML() {
     </html>
     `;
 
-    // Write html to a file
-    fs.writeFile("index.html", html, (err) => {
-        if (err) throw err;
-        console.log("Your html has been saved successfully!");
-    })
+    return html;
 }
 
+// Generates the html for an employee card
 function getEmployeeCardHTML(employee) {
     
-    let li = "";
+    let typespecificli = "";
     let icon = "";
 
+    // Set the above variables to their class specific value
     switch (employee.getRole()) {
         case "Manager":
-            li = `<li class="list-group-item">Office Number: ${employee.getOffice()}</li>`;
+            typespecificli = `<li class="list-group-item">Office Number: ${employee.getOffice()}</li>`;
             icon = `<i class="fas fa-mug-hot"></i>`;
             break;
         case "Intern":
-            li = `<li class="list-group-item">School: ${employee.getSchool()}</li>`;
+            typespecificli = `<li class="list-group-item">School: ${employee.getSchool()}</li>`;
             icon = `<i class="fas fa-user-graduate"></i>`;
             break;
         case "Engineer":
-            li = `<li class="list-group-item">Github: <a href="https://www.github.com/${employee.getGithub()}">${employee.getGithub()}</a></li>`;
+            typespecificli = `<li class="list-group-item">Github: <a href="https://www.github.com/${employee.getGithub()}">${employee.getGithub()}</a></li>`;
             icon = `<i class="fas fa-glasses"></i>`;
             break;
     }
@@ -175,7 +213,7 @@ function getEmployeeCardHTML(employee) {
         <ul class="list-group">
             <li class="list-group-item">ID: ${employee.getId()}</li>
             <li class="list-group-item">Email: <a href="${employee.getEmail()}">${employee.getEmail()}</a></li>
-            ${li}
+            ${typespecificli}
             </ul>
     </div>
 </div>
