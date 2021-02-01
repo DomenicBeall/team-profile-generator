@@ -114,7 +114,7 @@ function createIntern() {
 
 // Writes generated html to a file
 function writeHTML() {
-    fs.writeFile("index.html", generateHTML(), (err) => {
+    fs.writeFile("./dist/index.html", generateHTML(), (err) => {
         if (err) throw err; // Throw an error if the write failed
 
         console.log("Your html has been saved successfully!"); // Otherwise notify the user that the file has been saved
