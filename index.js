@@ -4,16 +4,13 @@ const inquirer = require("inquirer");
 
 const Manager = require("./lib/Manager");
 const Intern = require("./lib/Intern");
-const Engineer = require("./lib/Manager");
+const Engineer = require("./lib/Engineer");
 
 
 // Create array of employees to be written
 employees = [];
 currentEmployeeID = 1;
 
-// Create a variable to store the html
-
-// Ask the user for the managers details and append the relevant html
 inquirer.prompt([
     { type: "input", name: "name", message: "What is the managers name?" },
     { type: "input", name: "email", message: "What is the managers email?" },
@@ -27,23 +24,67 @@ inquirer.prompt([
         answers.office
     ));
 
-    // Ask the user which employee type is being added
-    inquirer.prompt([
-        { type: "list", name: "type", message: "What type of employee would you like to add?", choices: ["Engineer", "Intern", "Quit"] }
-    ]).then(answers => {
-
-    });
-
-
+    addEmployees();
 });
 
-
-// Switch statement to ask different questions depending on the employee type
-// Append a new card to the html for each response
-
-// Generate HTML based on responses
 
 function grabID() {
     currentEmployeeID += 1;
     return currentEmployeeID - 1;
+}
+
+function addEmployees() {
+    inquirer.prompt([
+        { type: "list", name: "type", message: "What type of employee would you like to add?", choices: ["Engineer", "Intern", "Done"] }
+    ]).then(answers => {
+        switch (answers.type) {
+            case "Engineer":
+                createEngineer();
+                break;
+            case "Intern":
+                createIntern();
+                break;
+            case "Done":
+                writeHTML();
+                break;
+        }
+    });
+}
+
+function createEngineer() {
+    inquirer.prompt([
+        { type: "input", name: "name", message: "What is the engineer's name?" },
+        { type: "input", name: "email", message: "What is the engineer's email?" },
+        { type: "input", name: "github", message: "What is the engineer's GitHub username?" }
+    ]).then(answers => {
+        employees.push(new Engineer(
+            answers.name,
+            grabID(),
+            answers.email,
+            answers.github
+        ));
+
+        addEmployees();
+    });
+}
+
+function createIntern() {
+    inquirer.prompt([
+        { type: "input", name: "name", message: "What is the intern's name?" },
+        { type: "input", name: "email", message: "What is the intern's email?" },
+        { type: "input", name: "school", message: "What school is the intern from?" }
+    ]).then(answers => {
+        employees.push(new Intern(
+            answers.name,
+            grabID(),
+            answers.email,
+            answers.school
+        ));
+
+        addEmployees();
+    });
+}
+
+function writeHTML() {
+    
 }
