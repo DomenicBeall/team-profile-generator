@@ -11,7 +11,7 @@ describe("Manager", () => {
             expect(emp.getId()).toEqual(1);
             expect(emp.getEmail()).toEqual("domenicbeall2@gmail.com");
             expect(emp.getOffice()).toEqual(1);
-            expect(emp.getRole()).toEqual("Intern");
+            expect(emp.getRole()).toEqual("Manager");
         });
 
     });
